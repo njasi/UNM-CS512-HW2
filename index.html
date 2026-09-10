@@ -204,6 +204,7 @@
       in vec3 aColor;
 
       uniform float uTime; // time in sec
+      uniform vec2 uShardTranslation; // translation coords 
       out vec3 vColor;
 
       // create a 2d scaling matrix
@@ -271,9 +272,15 @@
           float resizeAmount = 1.0 + sin(uTime * 20.0 * (scale + 0.5)) * 0.03 * scale;
           mat3 S = scaling2D(resizeAmount, resizeAmount);
 
+          mat3 R = rotate2D(3.14159 * (uTime / 3.0) * 2.0 );
+
           // NOTE: reimplemented scaling with the matrix
-          mat3 M = T * S;
+          mat3 M = T * R * S;
           pos = M * pos;
+        } else {
+          // translate the shards based on the translation calculated in js
+          mat3 T = translate2D(uShardTranslation.x, uShardTranslation.y);
+          pos = T * pos;
         }
 
         // drop the z=1 for the 2d shader 
@@ -423,6 +430,7 @@
           colorLoc = gl.getAttribLocation(program, "aColor");
           timeLoc = gl.getUniformLocation(program, "uTime");
           trans = gl.getUniformLocation(program, "trans");
+          shardTranslationLoc = gl.getUniformLocation(program, "uShardTranslation");
         } catch (e) {
           console.error(e);
         }
@@ -455,6 +463,12 @@
 
         for (let shard of shards) {
           shard.update(deltaTime * config["speed"]);
+
+          gl.uniform2f(
+            shardTranslationLoc,
+            shard.position[0],
+            shard.position[1]
+          );
 
           // Position buffer binding
           gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);

@@ -4,6 +4,7 @@ in vec3 aPosition;
 in vec3 aColor;
 
 uniform float uTime; // time in sec
+uniform vec2 uShardTranslation; // translation coords 
 out vec3 vColor;
 
 // create a 2d scaling matrix
@@ -70,10 +71,15 @@ void main() {
     // change scale with sin like a z shake
     float resizeAmount = 1.0 + sin(uTime * 20.0 * (scale + 0.5)) * 0.03 * scale;
     mat3 S = scaling2D(resizeAmount, resizeAmount);
+    mat3 R = rotate2D(3.14159 * (uTime / 3.0) * 2.0 );
 
-    // NOTE: reimplemented scaling with the matrix
-    mat3 M = T * S;
+    // NOTE: reimplemented scaling, translation with the matrix & added rotation
+    mat3 M = T * R * S;
     pos = M * pos;
+  } else {
+    // translate the shards based on the translation calculated in js
+    mat3 T = translate2D(uShardTranslation.x, uShardTranslation.y);
+    pos = T * pos;
   }
 
   // drop the z=1 for the 2d shader 

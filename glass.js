@@ -25,6 +25,7 @@ class Shard {
     this.points = new Float32Array(points);
     this.stationary = stationary;
     this.debug = false;
+    this.position = new Float32Array([0.0, 0.0]);
 
     if (!!colors) {
       // use passed colors
@@ -60,20 +61,11 @@ class Shard {
     // update the speed, ie pull it down via gravity
     this.speed[1] -= 9.81 * timestep;
 
-    let dx = (this.speed[0] * timestep) / 10;
-    let dy = (this.speed[1] * timestep) / 10;
+    // only update position vec, translation is in the shader now
+    this.position[0] += (this.speed[0] * timestep) / 10.0;
+    this.position[1] += (this.speed[1] * timestep) / 10.0;
 
-    let below_screen = true;
-    // update position (add speed vec)
-    for (let i = 0; i < this.points.length; i += 3) {
-      this.points[i] += dx;
-      this.points[i + 1] += dy;
-
-      // -1 works as a cuttoff but -2 just in case i want to zoom out later
-      below_screen = below_screen && this.points[i + 1] < -2;
-    }
-
-    if (below_screen) {
+    if (this.position[1] < -2) {
       this.stationary = true;
     }
 

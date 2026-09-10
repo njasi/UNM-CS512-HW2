@@ -495,13 +495,13 @@ function shatter(
       triangulatedVertices.push(
         v0[0] - x_lim / 2,
         v0[1] - y_lim / 2,
-        0.0,
+        1.0,
         v1[0] - x_lim / 2,
         v1[1] - y_lim / 2,
-        0.0,
+        1.0,
         v2[0] - x_lim / 2,
         v2[1] - y_lim / 2,
-        0.0,
+        1.0,
       );
     }
     return new Shard(triangulatedVertices, [vx, vy]);

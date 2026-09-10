@@ -80,7 +80,7 @@ void main() {
     // translate the shards based on the translation calculated in js
     mat3 T = translate2D(uShardTranslation.x, uShardTranslation.y);
     float scale = 1.0 - (uTime - 3.0) / 5.0;
-    mat3 S = scale2D(scale, scale);
+    mat3 S = scaling2D(scale, scale);
 
     mat3 M = T * S;
     pos = M * pos;

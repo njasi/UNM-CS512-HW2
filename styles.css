@@ -1,0 +1,32 @@
+.compact-sliders label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.compact-sliders span code {
+  min-width: 2rem;
+  display: inline-block;
+  background-color: var(--background);
+  padding: 4px;
+}
+
+.compact-sliders span {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controls button {
+  color: var(--accent);
+  background-color: var(--surface);
+  border: 1px solid var(--accent);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: all;
+  transition-duration: 100ms;
+}
+
+.controls button:hover {
+  background-color: var(--background);
+}
